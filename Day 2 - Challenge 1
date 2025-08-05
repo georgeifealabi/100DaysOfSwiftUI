@@ -1,0 +1,13 @@
+import Cocoa
+
+let celsius = 45
+let fahrenheit = ((celsius * 9) / 5) + 32
+print(celsius, fahrenheit)
+
+
+
+let celsius2 = 45.0
+let fahrenheit2 = (celsius * 9 / 5) + 32
+print("\(celsius2)°C is equal to \(fahrenheit2)°F")
+
+
