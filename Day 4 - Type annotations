@@ -1,0 +1,50 @@
+## 📅 Day 4 – Type annotations 
+**Date:** August 7, 2025  
+**Focus:** What are Type annotations and when do you use them
+
+---
+
+### 🧠 What I Learned
+- When to use type annotations
+
+
+---
+
+### 💻 Code Example
+
+
+
+```swift
+import Cocoa
+
+let surname = "Lasso"
+var score = 0
+
+let surname2: String = "Lasso"
+var score2: Double = 0
+
+var soda: [String] = ["Coke", "Fanta", "Pepsi"]
+var teams: [String] = [String]()
+var cities: [String] = []
+var clues = [String]()
+
+
+
+enum UIStyle {
+    case light, dark, system
+}
+
+var style = UIStyle.light
+style = .dark
+
+
+
+//This is a comment
+
+
+//Example of a situration where I might not know or have the value/data of my constant or variable yet, I can still set a type against it.
+let username: String
+// lots of complex logic
+username = "@twostraws"
+// lots more complex logic
+print(username)
