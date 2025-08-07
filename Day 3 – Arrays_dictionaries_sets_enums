@@ -1,0 +1,108 @@
+## 📅 Day 3 – Arrays_dictionaries_sets_enums
+**Date:** August 6, 2025  
+**Focus:** Complex data types in Swift
+
+---
+
+### 🧠 What I Learned
+- What arrays, dictionaries, sets and enums are
+- There differences
+- Usecases
+
+---
+
+### 💻 Code Example
+
+
+
+```swift
+import Cocoa
+
+var beatles = ["John", "Ringo", "Peter", "Sam"]
+beatles.append("Adrian")
+
+var temperatures = [25.0, 45.1, 21.5]
+
+var scores = Array<Int>()
+scores.append(100)
+scores.append(80)
+scores.append(85)
+print(scores[1])
+
+var albums = [String]()
+albums.append("Get Rich Or Die Trying")
+albums.append("Elephunk")
+albums.append("Norman Fucking Rockwell")
+print(albums.count)
+
+var characters = ["Lana", "Pam", "Jason", "Rashfod"]
+print(characters.count)
+
+characters.remove(at: 2)
+print(characters.count)
+
+characters.removeAll()
+print(characters.count)
+
+let bondMovies = ["Casino Royale", "Spectre", "No Time to Die"]
+print(bondMovies.contains("Frozen"))
+
+let cities = ["Dubai", "Osaka", "Lagos", "Cape Town"]
+print(cities.sorted())
+
+let presidents = ["Bush", "Obama", "Biden", "Trump"]
+let reversedPresidents = presidents.reversed()
+print(reversedPresidents)
+
+
+let employee2 = [
+    "name": "Sony",
+    "job": "Race car driver",
+    "location": "Nomad"
+]
+
+print(employee2["name", default: "Unknown"])
+print(employee2["job", default: "Unknown"])
+print(employee2["location", default: "Unknown"])
+
+let olympics = [
+    2012: "London",
+    2016: "Rio de Janeiro",
+    2021: "Tokyo"
+]
+
+print(olympics[2012, default: "Unknown"])
+
+var archEnemies = [String: String]()
+archEnemies["Batman"] = "The Joker"
+archEnemies["Superman"] = "Lex Luthor"
+archEnemies["Batman"] = "Penguin"
+
+
+let actors = Set([
+    "Denzel Washington",
+    "Tom Cruise",
+    "Nicolas Cage",
+    "Samuel L Jackson"
+])
+print(actors)
+
+var actress = Set<String>()
+actress.insert("Julia Roberts")
+actress.insert("Margo Robbie")
+actress.insert("Alicia Vikindar")
+actress.insert("Lily Thomas")
+print(actress)
+
+
+enum Weekday {
+    case monday
+    case tuesday
+    case wednesday
+    case thursday
+    case friday
+}
+
+var day = Weekday.monday
+day = .tuesday
+day = .friday
