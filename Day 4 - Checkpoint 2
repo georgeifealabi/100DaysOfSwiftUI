@@ -1,0 +1,24 @@
+## 📅 Day 4 – Checkpoint 2
+**Date:** August 6, 2025  
+**Focus:** Use what I've learn so fat
+
+---
+
+### 💻 Code Example
+
+
+
+```swift
+import Cocoa
+
+//Checkpoint 2 Challenge
+
+//Now that you’ve met arrays, dictionaries, and sets, I want to pause for a moment to give you chance to solve a small coding challenge. It’s not designed to trip you up, but instead to encourage you to stop for a while and think about what you’ve learned.
+// This time the challenge is to create an array of strings, then write some code that prints the number of items in the array and also the number of unique items in the array.
+
+
+let favouriteAnime = ["Naruto", "Bleach", "Jujitsu Kaisen", "Demon Hunters", "My Hero Academia", "Pyschi", "Steins Gate", "Attack on Titan"]
+print(favouriteAnime.count)
+
+let favouriteAnime2 = Set(["Naruto", "Bleach", "Jujitsu Kaisen", "Demon Hunters", "My Hero Academia", "Pyschi", "Steins Gate", "Attack on Titan", "Naruto"])
+print(favouriteAnime2.count)
