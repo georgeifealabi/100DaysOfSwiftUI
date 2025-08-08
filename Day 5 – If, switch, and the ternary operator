@@ -1,0 +1,199 @@
+## 📅 Day 5 – If, switch, and the ternary operator
+**Date:** August 8, 2025  
+**Focus:** Conditions in Swift
+
+---
+
+### 🧠 What I Learned
+- Condition types like if, else, else if, switch, default, fallthrough, ternary operator
+- There differences
+- Usecases
+
+---
+
+### 💻 Code Example
+
+
+
+```swift
+import Cocoa
+
+//Learning about 'If' statements
+// if someCondition {
+//    print("Do something")
+//    print("Do something else")
+//    print("Do a third thing")
+//}
+
+
+//Example using numbers
+let score = 85
+let speed = 25
+let time = 11.20
+let age = 75
+
+if score > 80 {
+    print("Great job!")
+}
+
+if speed >= 25 {
+    print("I'm doing a great job!")
+}
+
+if time < 10.00 {
+    print ("Who you gonna call?!")
+}
+
+if age <= 75 {
+    print("I'm smashing this!")
+}
+
+
+//Example using strings
+let ourName = "Tinneh Tempa"
+let friendName = "Kano"
+
+if ourName < friendName {
+    print("It's \(ourName) vs \(friendName)")
+}
+
+if ourName > friendName {
+    print("It's \(friendName) vs \(ourName)")
+}
+
+//Example using conditions like append, count and remove
+var numbers = [1, 2, 3]
+numbers.append(4)
+
+if numbers.count > 3 {
+    numbers.remove(at: 0)
+}
+
+print(numbers)
+
+
+
+let country = "Canada"
+
+if country == "Australia" {
+    print("G'day!")
+}
+
+let name = "Taylor Swift"
+
+if name != "Anonymous" {
+    print("Welcome, \(name)")
+}
+
+
+// Create the username variable
+var username = "taylorswift13"
+
+if username.isEmpty {
+    username = "Anonymous"
+}
+
+
+//===============================================================================
+//How to check multiple conditions
+
+let accountBalance = 50_000
+if accountBalance >= 30_000 {
+    print("You have reached your goal. You have \(accountBalance) AED left")
+} else {
+    print("Keep working, you're almost there!")
+}
+
+
+enum transportOption {
+    case superbike, kano, kite, rocket, boat, legs
+}
+
+let transport = transportOption.superbike
+
+if transport == .superbike || transport == .legs {
+    print("Let's move baby!")
+} else if transport == .kano || transport == .boat {
+    print("Someone carry a life jacket 😨")
+} else {
+    print("Let's hope we can fly")
+}
+
+
+//===============================================================================
+//How to use switch statements to check multiple conditions
+enum cinemaScore {
+    case A, B, C, D, F
+}
+
+let movieRating = cinemaScore.A
+
+switch movieRating {
+case .A:
+        print("Great movie. Audience favourite")
+case .B:
+        print("Good watch")
+case .C:
+    print("Okay movie")
+case .D:
+    print("Not my cup of tea")
+case .F:
+    print("Waste of time")
+}
+
+
+//Using default
+let place = "Metropolis"
+
+switch place {
+case "Gotham":
+    print("You're Batman!")
+case "Mega-City One":
+    print("You're Judge Dredd!")
+case "Wakanda":
+    print("You're Black Panther!")
+default:
+    print("Who are you?")
+}
+
+
+//Using fallthrough
+let day = 5
+print("My true love gave to me…")
+
+switch day {
+case 5:
+    print("5 golden rings")
+    fallthrough
+case 4:
+    print("4 calling birds")
+    fallthrough
+case 3:
+    print("3 French hens")
+    fallthrough
+case 2:
+    print("2 turtle doves")
+    fallthrough
+default:
+    print("A partridge in a pear tree")
+}
+
+
+
+//How to use the ternary conditional operator for quick tests
+let hour = 23
+print(hour < 12 ? "It's before noon" : "It's after noon")
+
+let names = ["Jayne", "Kaylee", "Mal"]
+let crewCount = names.isEmpty ? "No one" : "\(names.count) people"
+print(crewCount)
+
+
+enum Theme {
+    case light, dark
+}
+
+let theme = Theme.dark
+
+let background = theme == .dark ? "black" : "white"
+print(background)
