@@ -1,0 +1,33 @@
+## 📅 Day 9 – Closures, passing functions into functions
+**Date:** August 12, 2025  
+**Focus:** Understanding Closures and its syntax
+
+---
+
+### 🧠 What I Learned
+- Definitely the hardest day of my learning so far. I have barely grasped my understanding of functions and how to creatively use them and closures has added another level of complexity.
+
+---
+
+Because of how complex the topic is, I was barley able to follow along with my own code so I did not capture much. Saying that though, I will continue to push on.
+
+### 💻 Code Example
+
+
+```swift
+import Cocoa
+
+//How to create and use closures
+
+let sayHello = { (name: String) -> }
+
+
+
+//How to use trailing closures and shorthand syntax
+let team = ["Gloria", "Suzzane", "Piper", "Tiffany", "Tasha"]
+
+
+let sorted = team.sorted { String, <#String#> in
+    <#code#>
+}
+
