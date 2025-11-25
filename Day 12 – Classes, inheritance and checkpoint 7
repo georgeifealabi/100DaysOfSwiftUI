@@ -1,0 +1,304 @@
+## 📅 Day 12 – Classes, inheritance and checkpoint 7
+**Date:** November 25, 2025  
+**Focus:** Classes, inheritance and deinitializers
+
+---
+
+
+```swift
+import Cocoa
+
+// ***General note - If Swift UI uses Structs for its design, it uses Classes extensively for its data.
+
+// Lesson 1 - How to create your own classes
+// Example of a Class below:
+
+class Game {
+    var score = 0 {
+        didSet {
+            print("Score is now \(score)")
+        }
+    }
+}
+
+var newGame = Game()
+newGame.score += 10
+
+/*
+ Differences between Classess and Structs:
+ - Classes do not come with synthesized memberwise initializers.
+ - One class can be built upon (“inherit from”) another class, gaining its properties and methods.
+ - Copies of structs are always unique, whereas copies of classes actually point to the same shared data.
+ - Classes have deinitializers, which are methods that are called when an instance of the class is destroyed, but structs do not.
+ - Variable properties in constant classes can be modified freely, but variable properties in constant structs cannot.
+ */
+
+
+// Lesson 2 - How to make one class inherit from another
+// Example below:
+
+class Employee {
+    let hours: Int
+    
+    init(hours: Int) {
+        self.hours = hours
+    }
+    
+    func printSummary() {
+        print("I work \(hours) hours a day")
+    }
+}
+
+class Developer: Employee {
+    func work() {
+        print("I'm writing code for \(hours) hours.")
+    }
+    
+    // The below is an override function, used when inheriting a function from the parent class. You don't need it if the function you're calling doesn't take parameters or return any value.
+    override func printSummary() {
+        print("I'm a developer who will sometimes work \(hours) hours a day, but other times will spend hours arguing about whether code should be indented using tabs or spaces.")
+    }
+}
+
+// You can mark a class as 'Final' if you know you don't want the class to be inherited by other classes.
+final class Manager: Employee {
+    func work() {
+        print("I'm going to meetings for \(hours) hours")
+    }
+}
+
+let robert = Developer(hours: 8)
+let joseph = Manager(hours: 10)
+robert.work()
+joseph.work()
+
+//The below examples shows how we can call functions from the parent class.
+let novall = Developer(hours: 8)
+novall.printSummary()
+
+
+// Lesson 3 - How to add initializers for classes
+// Example below:
+class Vehicle {
+    let isElectric: Bool
+    
+    init(isElectric: Bool) {
+        self.isElectric = isElectric
+    }
+}
+
+class Car: Vehicle {
+    let isConvertible: Bool
+    
+    init(isElectric: Bool, isConvertible: Bool) {
+        self.isConvertible = isConvertible
+        super.init(isElectric: isElectric)
+    }
+}
+
+let teslaX = Car(isElectric: true, isConvertible: false)
+
+// In a scenario where my child class i.e. 'Car', has now initializers, I can simply get rid of the init call and do not need to declare the init from the parent class.
+
+
+// Lesson 4 - How to copy classes
+// Updating the value of a class will update it in the primary class as well. It allows us to share data across common parts of our programme. Example below:
+class User {
+    var username = "Anonymous"
+    
+    func copy() -> User {
+        let user = User()
+        user.username = username
+        return user
+    }
+}
+
+var user1 = User()
+var user2 = user1.copy()    // This is refered to as a 'deep copy'. It is using the function above to make sure that the original username i.e. 'Anoynymous' remains.
+user2.username = "Taylor"
+
+print(user1.username)
+print(user2.username)
+
+
+
+// Lesson 5 - How to create a deinitializer for a class
+// Example below:
+class NewUser {
+    let id: Int
+    
+    init(id: Int) {
+        self.id = id
+        print("User \(id): I'm alive!")
+    }
+    
+    deinit {
+        print("User \(id): I'm dead!")
+    }
+}
+
+for i in 1...3 {
+    let user = NewUser(id: i)
+    print("User \(user.id): I'm in control!")
+}
+
+// Behind the scenes Swift performs something called automatic reference counting, or ARC. ARC tracks how many copies of each class instance exists: every time you take a copy of a class instance Swift adds 1 to its reference count, and every time a copy is destroyed Swift subtracts 1 from its reference count.
+
+
+
+// Lesson 6 - How to work with variables inside classes
+
+
+
+// Checkpoint 7
+/*
+ Your challenge is this: make a class hierarchy for animals, starting with Animal at the top, then Dog and Cat as subclasses, then Corgi and Poodle as subclasses of Dog, and Persian and Lion as subclasses of Cat.
+
+ But there’s more:
+
+ 1. The Animal class should have a legs integer property that tracks how many legs the animal has.
+ 2. The Dog class should have a speak() method that prints a generic dog barking string, but each of the subclasses should print something slightly different.
+ 3. The Cat class should have a matching speak() method, again with each subclass printing something different.
+ 4. The Cat class should have an isTame Boolean property, provided using an initializer.
+ 
+ */
+
+class Animal {
+    var legs: Int
+    
+    init(legs: Int) {
+        self.legs = legs
+    }
+}
+
+
+class Dog: Animal {
+    
+    override init(legs: Int) {
+        super.init(legs: legs)
+    }
+    
+    func speak() {
+        print("Woof!")
+    }
+}
+
+
+class Cat: Animal {
+    var isTame: Bool
+    
+    init(legs: Int, isTame: Bool) {
+        self.isTame = isTame
+        super.init(legs: legs)
+    }
+    
+    func speak() {
+        print("Meaow!")
+    }
+}
+
+
+class Corgi: Dog {
+    
+    override init(legs: Int) {
+        super.init(legs: legs)
+    }
+    
+    override func speak() {
+        print("Woof!")
+    }
+}
+
+
+class Poodle: Dog {
+    
+    override init(legs: Int) {
+        super.init(legs: legs)
+    }
+    
+    override func speak() {
+        print("Woof!")
+    }
+}
+
+
+class Persian: Cat {
+    
+    override init(legs: Int, isTame: Bool) {
+        super.init(legs: legs)
+        super.init(isTame: isTame)
+    }
+    
+    override func speak() {
+        print("Meaow")
+    }
+}
+
+
+class Lion: Cat {
+    
+    override init(legs: Int, isTame: Bool) {
+        super.init(legs: legs)
+        super.init(isTame: isTame)
+    }
+    
+    override func speak() {
+        print("Roar!")
+    }
+}
+
+
+/*
+ Improved answer from Claude:
+ 
+ class Animal {
+     var legs: Int
+     
+     init(legs: Int) {
+         self.legs = legs
+     }
+ }
+
+ class Dog: Animal {
+     func speak() {
+         print("Woof!")
+     }
+ }
+
+ class Cat: Animal {
+     var isTame: Bool
+     
+     init(legs: Int, isTame: Bool) {
+         self.isTame = isTame
+         super.init(legs: legs)
+     }
+     
+     func speak() {
+         print("Meow!")
+     }
+ }
+
+ class Corgi: Dog {
+     override func speak() {
+         print("Yip yip!")
+     }
+ }
+
+ class Poodle: Dog {
+     override func speak() {
+         print("Woof woof, darling!")
+     }
+ }
+
+ class Persian: Cat {
+     override func speak() {
+         print("Mrrrow~")
+     }
+ }
+
+ class Lion: Cat {
+     override func speak() {
+         print("ROAR!")
+     }
+ }
+ */
