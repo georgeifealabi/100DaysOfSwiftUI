@@ -1,0 +1,339 @@
+## 📅 Day 13 – Protocols_extensions and checkpoint 8
+**Date:** November 28, 2025  
+**Focus:** Protocols
+
+---
+
+
+```swift
+import Cocoa
+
+// Lesson 1 - How to create and use protocols
+// Protocols are helpful in creating standards, somewhat like blueprints.
+
+protocol Vehicle {
+    var name: String { get }
+    var currentPassengers: Int { get set }
+    func estimatetime(for distance: Int) -> Int
+    func travel(distance: Int)          // The methods don't have function bodies inside of them.
+}
+
+struct Car: Vehicle {
+    let name = "Car"
+    var currentPassengers = 1
+    
+    func estimatetime(for distance: Int) -> Int {
+        distance / 50
+    }
+    
+    func travel(distance: Int) {
+        print("I'm driving \(distance)km")
+    }
+    
+    func openSunroof() {
+        print("It's a nice day!")
+    }
+}
+
+struct Bicycle: Vehicle {
+    let name = "Bicycle"
+    var currentPassengers = 1
+    
+    func estimatetime(for distance: Int) -> Int {
+        distance / 10
+    }
+    
+    func travel(distance: Int) {
+        print("I'm cycling \(distance)km")
+    }
+}
+
+
+func commute(distance: Int, using vehicle: Vehicle) {
+    if vehicle.estimatetime(for: distance) > 100 {
+        print("That's too slow! I'll try a different vehicle.")
+    } else {
+        vehicle.travel(distance: distance)
+    }
+}
+
+
+func getTravelEstimates(using vehicles: [Vehicle], distance: Int) {
+    for vehicle in vehicles {
+        let estimate = vehicle.estimatetime(for: distance)
+        print("\(vehicle.name): \(estimate) hours to travel \(distance)km")
+    }
+}
+
+
+let car = Car()
+commute(distance: 100, using: car)
+
+let bike = Bicycle()
+commute(distance: 50, using: bike)
+
+getTravelEstimates(using: [car, bike], distance: 150)
+
+
+
+// Lesson 2 - How to use opaque return types
+protocol View { }
+
+
+
+func getRandomNumber() -> some Equatable {
+    Int.random(in: 1...6)
+}
+
+func getRandomBool() -> some Equatable {
+    Bool.random()
+}
+
+print(getRandomNumber() == getRandomNumber())
+
+
+
+// Lesson 3 - How to create and use extensions
+// Extensions let us add functionality to any type including the ones we make or ones made by Apple.
+
+var quote = "   The truth is rarely pure and never simple   "
+let trimmed = quote.trimmingCharacters(in: .whitespacesAndNewlines)
+
+// The extension below allows us to quicken the process of removing white space from our code, especially if we need to repeat it.
+extension String {
+    func trimmed() -> String {
+        self.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    mutating func trim() {
+        self = self.trimmed()
+    }
+    
+    var lines: [String] {
+        self.components(separatedBy: .newlines)
+    }
+}
+
+let trimmed2 = quote.trimmed()
+
+let lyrics = """
+But I keep cruising
+Can't stop, won't stop moving
+It's like I got this music in my mind
+Saying it's gonna be alright
+"""
+
+print(lyrics.lines.count)
+
+
+// We can use extensions in Structs as well to hold our custom initializers.  Example below:
+struct Book {
+    let title: String
+    let pageCount: Int
+    let readingHours: Int
+}
+
+extension Book {
+    init(title: String, pageCount: Int) {
+        self.title = title
+        self.pageCount = pageCount
+        self.readingHours = pageCount / 50
+    }
+}
+
+let lotr = Book(title: "Lord of the Rings", pageCount: 1178, readingHours: 24)
+let harryPotter = Book(title: "Goblet of Fire", pageCount: 879)
+
+
+
+// Lesson 4 - How to create and use protocol extensions
+extension Collection {
+    var isNotEmpty: Bool {
+        isEmpty == false
+    }
+}
+
+
+
+let guests = ["Mario", "Luigi", "Peach"]
+
+if guests.isNotEmpty {
+    print("Guest count: \(guests.count)")
+}
+
+
+protocol Person {
+    var name: String { get }
+    func sayHello()
+}
+
+extension Person {
+    func sayHello() {
+        print("Hi, I'm \(name)")
+    }
+}
+
+struct Employee: Person {
+    let name: String
+}
+
+let taylor = Employee(name: "Taylor Swift")
+taylor.sayHello()
+
+
+
+/*
+ Checkpoint 8
+ Now that you understand how protocols and extensions work, it’s time to pause our learning and take on a challenge so you can put it all into practice.
+
+ Your challenge is this: make a protocol that describes a building, adding various properties and methods, then create two structs, House and Office, that conform to it. Your protocol should require the following:
+
+ A property storing how many rooms it has.
+ A property storing the cost as an integer (e.g. 500,000 for a building costing $500,000.)
+ A property storing the name of the estate agent responsible for selling the building.
+ A method for printing the sales summary of the building, describing what it is along with its other properties.
+*/
+// My answer below:
+protocol BuildingDetails {
+    var rooms: Int { get set }
+    var cost: Int { get }
+    var estateAgent: String { get }
+    func salesSummary()
+}
+
+extension BuildingDetails {
+    func salesSummary() {
+        print("This building has \(rooms) rooms. It costs $\(cost) and is being sold by \(estateAgent).")
+    }
+}
+
+struct House: BuildingDetails {
+    var rooms: Int
+    let cost: Int
+    var estateAgent: String
+}
+
+struct Office: BuildingDetails {
+    var rooms: Int
+    let cost: Int
+    var estateAgent: String
+}
+
+let aspectTower = Office(rooms: 178, cost: 28_000_000, estateAgent: "Mr Mahud Saleem")
+aspectTower.salesSummary()
+
+let shawGrove = House(rooms: 3, cost: 90_000, estateAgent: "Sharon Carpenter")
+shawGrove.salesSummary()
+
+
+/* Rating by Claude
+ ✅ What You Did Well
+
+ Protocol conforms to all requirements - you included all 4 required elements
+ Used protocol extension effectively - implementing salesSummary() once for all conforming types is smart and DRY
+ Code works correctly - both structs conform and the output is correct
+ Good naming - clear variable names and realistic examples
+
+ 🤔 Areas for Improvement
+ 1. Property access levels are inconsistent with the requirements
+ The challenge says the protocol should "require" these properties, but your choices seem arbitrary:
+ Better approach: Think about the real-world semantics:
+
+ rooms: Does the number of rooms change after construction? Probably not → use { get }
+ cost: Does the price change? In reality yes, but for this exercise, probably not → use { get }
+ estateAgent: Might the agent change? Possibly → { get set } makes sense
+ 2. Missing building type information in sales summary
+ The requirement says "describing what it is along with its other properties", but your summary doesn't distinguish between a House and Office:
+ Better approach: Add a property to identify the building type:
+ 3. Cost formatting could be more readable
+ You could add number formatting:
+
+ 🎯 Key Lessons
+
+ Think about real-world semantics when choosing { get } vs { get set }
+ Requirements can be implicit - "describing what it is" means you need type information
+ User experience matters - formatted numbers are more readable
+ Protocol extensions are powerful - one implementation serves all conforming types
+
+ Overall rating: 7.5/10 - Solid foundation with room for refinement in design thinking! 🚀
+ 
+ 📝 Refined Solution below:
+*/
+
+protocol BuildingDetails2 {
+    var buildingType: String { get }
+    var rooms: Int { get }
+    var cost: Int { get }
+    var estateAgent: String { get set }
+    func salesSummary()
+}
+
+extension BuildingDetails2 {
+    func salesSummary() {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let formattedCost = formatter.string(from: NSNumber(value: cost)) ?? "\(cost)"
+        
+        print("This \(buildingType) has \(rooms) room\(rooms == 1 ? "" : "s"). It costs $\(formattedCost) and is being sold by \(estateAgent).")
+    }
+}
+
+struct House2: BuildingDetails2 {
+    let buildingType = "house"
+    let rooms: Int
+    let cost: Int
+    var estateAgent: String
+}
+
+struct Office2: BuildingDetails2 {
+    let buildingType = "office"
+    let rooms: Int
+    let cost: Int
+    var estateAgent: String
+}
+
+let aspectTower2 = Office2(rooms: 178, cost: 28_000_000, estateAgent: "Mr Mahud Saleem")
+aspectTower.salesSummary()
+// Output: This office has 178 rooms. It costs $28,000,000 and is being sold by Mr Mahud Saleem.
+
+var shawGrove2 = House2(rooms: 3, cost: 90_000, estateAgent: "Sharon Carpenter")
+shawGrove.salesSummary()
+// Output: This house has 3 rooms. It costs $90,000 and is being sold by Sharon Carpenter.
+
+// Now we can change the agent:
+shawGrove2.estateAgent = "John Smith"
+shawGrove2.salesSummary()
+
+
+
+// 🎂 BONUS LESSON
+// How to get the most from protocol extensions
+extension Numeric {
+    func squared() -> Self {
+        self * self
+    }
+}
+
+let wholeNumber = 5
+print(wholeNumber.squared())
+
+
+// Equatable is what Swift uses to compare property values (i.e. from - let, var) using == and not !=.
+// There is another Swift protocol called 'Comparable' which allows Swift to see if one object should be sorted before another.
+// We can also delete 'Equatable' from the code as Swift uses something called 'Protocol Inheritance', which means that because the 'Comparable' protocol is being used, it automatically inherites the Equatable protocol behaviour.
+struct User: Equatable, Comparable {
+    let name: String
+    
+    static func <(lhs: User, rhs: User) -> Bool {       // lhs means 'left hand side'. rhs means 'right hand side'.
+        lhs.name < rhs.name
+    }
+}
+
+let user1 = User(name: "Link")
+let user2 = User(name: "Zelda")
+print(user1 == user2)
+print(user1 != user2)
+print(user1 < user2)
+print(user1 <= user2)
+print(user1 > user2)
+print(user1 >= user2)
