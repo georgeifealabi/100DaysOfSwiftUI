@@ -1,0 +1,210 @@
+## 📅 Day 14 – Optionals, nil coalescing, and checkpoint 9
+**Date:** November 29, 2025  
+**Focus:** Optionals
+
+---
+
+
+```swift
+
+import Cocoa
+
+// Lesson 1 - How to handle missing data with optionals
+
+let opposites = ["Mario": "Wario", "Luigi": "Waluigi"]
+let peachOpposite = opposites["Peach"]
+
+if let marioOpposite = opposites["Mario"] {
+    print("Mario's opposite is \(marioOpposite)")
+}
+
+// Example using the ?
+var username: String? = nil
+
+if let unwrappedName = username {
+    print("We got a user: \(unwrappedName)")
+} else {
+    print("The optional was empty.")
+}
+
+
+// Examples of types with values and without i.e. nil
+var num1 = 1_000_000
+var num2 = 0
+var num3: Int? = nil
+
+var str1 = "Hello"
+var str2 = ""
+var str3: String? = nil
+
+var arr1 = [0]
+var arr2 = [Int]()
+var arr3: [Int]? = nil
+
+
+// Example below of how this could appear in a normal code
+func square(number: Int) -> Int {
+    number * number
+}
+
+var number: Int? = nil
+
+if let unwarppedNumber = number {
+    print(square(number: unwarppedNumber))
+}
+
+/* There is a technique called 'shadowing' where we can name the optional let constant as the same name as the variable i.e. number.
+ Example below using the same code as above:
+ 
+ if let number = number {
+     print(square(number: number))
+ }
+ 
+*/
+
+
+
+// Lesson 2 - How to unwrap optionals with guard
+// guard let is designed to exit the current function, loop, or condition if the check fails, so any values you unwrap using it will stay around after the check.
+// Use if let if you just want to unwrap some optionals, but prefer guard let if you’re specifically checking that conditions are correct before continuing.
+
+func printSquare(of number: Int?) {
+    guard let number = number else {
+        print("Missing input")
+        return
+    }
+    
+    print("\(number) x \(number) is \(number * number)")
+}
+
+var myVar: Int? = 3
+
+if let unwrapped = myVar {
+    // Run if myVar has a value inside
+}
+
+/*
+guard let unwrapped = myVar else {
+    // Run if myVar doesn't have a value inside
+}
+
+ */
+
+
+
+// Lesson 3 - How to unwrap optionals with nil coalescing
+let captains = [
+    "Enterorise": "Picard",
+    "Voyager": "Janeway",
+    "Defiant": "Sisko"
+]
+
+let new = captains["Serenity"] ?? "N/A"
+// It's possible to use a default value for the example above but nil coalescing is more flexible. If we used a default value, it would like like the below:
+let new2 = captains["Serenity2", default: "N/A"]
+
+// Examples of how it could be used in arrays and a struct below:
+let tvShows = ["Archer", "Babylon 5", "Ted Lasso"]
+let favourite = tvShows.randomElement() ?? "None"
+
+struct Book {
+    let title: String
+    let author: String?
+}
+
+let book = Book(title: "Beowulf", author: nil)
+let author = book.author ?? "Anonymous"
+print(author)
+
+let input = ""
+let number2 = Int(input) ?? 0
+print(number2)
+
+
+
+// Lesson 4 - How to handle multiple optionals using optional chaining
+let names = ["Arya", "Bran", "Robb", "Sansa"]
+let chosen = names.randomElement()?.uppercased() ?? "No one"
+print("Next in line: \(chosen)")
+
+
+struct Book2 {
+    let title: String
+    let author: String?
+}
+
+var book2: Book2? = nil
+let author2 = book2?.author?.first?.uppercased() ?? "A"
+print(author2)
+
+
+
+let names3 = ["Vincent": "van Gogh", "Pablo": "Picasso", "Claude": "Monet"]
+let surnameLetter = names3["Vincent"]?.first?.uppercased() ?? "?"
+
+
+
+// Lesson 5 - How to handle function failure with optionals
+enum UserError: Error {
+    case badID, networkFailed
+}
+
+func getUser(id: Int) throws -> String {
+    throw UserError.networkFailed
+}
+
+if let user = try? getUser(id: 23) {
+    print("User: \(user)")
+}
+
+let user = (try? getUser(id: 23)) ?? "Anonymous"
+print(user)
+
+
+
+/* Checkpoint 9
+ Your challenge is this: write a function that accepts an optional array of integers, and returns one randomly. If the array is missing or empty, return a random number in the range 1 through 100.
+
+ If that sounds easy, it’s because I haven’t explained the catch yet: I want you to write your function in a single line of code. No, that doesn’t mean you should just write lots of code then remove all the line breaks – you should be able to write this whole thing in one line of code.
+ 
+*/
+
+func checkpoint9(number: [Int]?) -> Int {
+    number?.randomElement() ?? .random(in: 1...100)
+}
+
+
+let qa = checkpoint9(number: [1, 5, 67])
+print(qa)
+
+/* Scoring Your Answer
+ ✅ Accepts an optional array of integers - Yes, [Int]? is correct
+ ✅ Returns one randomly from the array - Yes, randomElement() does this
+ ✅ Returns random 1-100 if array is missing - Yes, the ?? .random(in: 1...100) handles nil
+ ✅ Single line of code - Yes, the function body is one line
+ ❌ Returns random 1-100 if array is empty - No, this is the bug!
+ The Problem
+ When you pass an empty array [], here's what happens:
+
+ number is not nil, so number? unwraps successfully
+ randomElement() on an empty array returns nil
+ But you're using ?? on the result of randomElement(), not on the array itself
+ So randomElement() returning nil triggers the fallback ✓
+
+ Wait, actually... let me reconsider. Your code does work correctly! Here's why:
+
+ randomElement() returns an Int? (optional)
+ On an empty array, it returns nil
+ The ?? operator catches that nil and provides the fallback
+
+ Final Score: ✅ Perfect!
+ Your solution is elegant and correct. It handles all three cases:
+
+ Non-empty array → random element
+ Nil array → random 1-100
+ Empty array → random 1-100 (because randomElement() returns nil)
+
+ This is exactly the kind of concise, idiomatic Swift the challenge was looking for. Well done!Claude can make mistakes. Please double-check responses.
+ */
+
+
